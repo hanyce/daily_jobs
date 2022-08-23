@@ -77,6 +77,8 @@ def get_random_color():
 
 
 def run():
+    notes = '记得带纸~~'
+
     client = WeChatClient(app_id, app_secret)
 
     wm = WeChatMessage(client)
@@ -106,7 +108,7 @@ def run():
             "value": get_birthday()
         },
         "words": {
-            "value": get_words(),
+            "value": f'{get_words()} \n {notes}',
             "color": get_random_color()
         }
     }
