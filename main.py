@@ -18,13 +18,13 @@ user_id = os.environ["USER_ID"]
 template_id = os.environ["TEMPLATE_ID"]
 
 weekday_map = {
-    0: '星期一',
-    1: '星期二',
-    2: '星期三',
-    3: '星期四',
-    4: '星期五',
-    5: '星期六',
-    6: '星期天',
+    0: '星期二',
+    1: '星期三',
+    2: '星期四',
+    3: '星期五',
+    4: '星期六',
+    5: '星期天',
+    6: '星期一',
 }
 
 
@@ -77,7 +77,7 @@ def get_random_color():
 
 
 def run():
-    notes = '记得带纸~~'
+    notes = ''
 
     client = WeChatClient(app_id, app_secret)
 
