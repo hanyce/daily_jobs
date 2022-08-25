@@ -2,6 +2,7 @@ from datetime import date, datetime
 import math
 from wechatpy import WeChatClient
 from wechatpy.client.api import WeChatMessage, WeChatTemplate
+from retrying import retry
 import requests
 import os
 import random
@@ -41,15 +42,14 @@ def get_weekday_info():
         from_weekend = 5 - datetime.now().weekday()
         info = f'距离周末还剩{from_weekend}天'
     elif datetime.now().weekday() in [5, 6]:
-        info = f'今天是周末，好好休息吧~'
+        info = '今天是周末，好好休息吧~'
     return info
 
 
 def get_weather():
-    url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
+    url = f"http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city={city}"
     res = requests.get(url).json()
     weather = res['data']['list'][0]
-    print(weather)
     return weather['weather'], math.floor(weather['temp']), int(weather['low']), int(weather['high'])
 
 
@@ -65,10 +65,9 @@ def get_birthday():
     return (next - today).days
 
 
+@retry()
 def get_words():
     words = requests.get("https://api.shadiao.pro/chp")
-    if words.status_code != 200:
-        return get_words()
     return words.json()['data']['text']
 
 
