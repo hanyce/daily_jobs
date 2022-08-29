@@ -19,29 +19,30 @@ user_id = os.environ["USER_ID"]
 template_id = os.environ["TEMPLATE_ID"]
 
 weekday_map = {
-    0: '星期二',
-    1: '星期三',
-    2: '星期四',
-    3: '星期五',
+    0: '星期二&&4',
+    1: '星期三&&3',
+    2: '星期四&&2',
+    3: '星期五&&1',
     4: '星期六',
     5: '星期天',
-    6: '星期一',
+    6: '星期一&&5',
 }
 
 
 def get_today_info():
     today = datetime.now().date()
-    weekday = weekday_map[datetime.now().weekday()]
+    weekday = weekday_map[datetime.now().weekday()].split('&&')[0]
     from_weekend = 5 - datetime.now().weekday()
     return today, weekday, from_weekend
 
 
 def get_weekday_info():
     info = None
-    if datetime.now().weekday() in [0, 1, 2, 3, 4]:
-        from_weekend = 5 - datetime.now().weekday()
+    _weekday = datetime.now().weekday()
+    if _weekday in [6, 0, 1, 2, 3]:
+        from_weekend = weekday_map[_weekday].split('&&')[1]
         info = f'距离周末还剩{from_weekend}天'
-    elif datetime.now().weekday() in [5, 6]:
+    elif _weekday in [4, 5]:
         info = '今天是周末，好好休息吧~'
     return info
 
@@ -111,6 +112,7 @@ def run():
             "color": get_random_color()
         }
     }
+    print(data)
     res = wm.send_template(user_id, template_id, data)
     print(res)
 
